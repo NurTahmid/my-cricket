@@ -3,82 +3,70 @@ import { useState } from "react";
 import axios from "axios";
 
 function Insert() {
-  var [name, setName] = useState();
-  var [match, setMatch] = useState();
-  var [inns, setInns] = useState();
-  var [runs, setRuns] = useState();
-  var [hs, setHS] = useState();
-  var [ave, setAVE] = useState();
+  var [state, setState] = useState({
+    Player_Name: "",
+    Matches: "",
+    Inns: "",
+    Runs: "",
+    HS: "",
+    Ave: ""
+  });
 
-  const nameUpdate = (event) => {
-    setName(event.target.value);
-  };
-  const matchUpdate = (event) => {
-    setMatch(event.target.value);
-  };
-  const innsUpdate = (event) => {
-    setInns(event.target.value);
-  };
-  const runsUpdate = (event) => {
-    setRuns(event.target.value);
-  };
-  const hsUpdate = (event) => {
-    setHS(event.target.value);
-  };
-  const aveUpdate = (event) => {
-    setAVE(event.target.value);
-  };
+  const handleUpdate = (e) => {
+    const value = e.target.value;
+    setState({
+      ...state,
+      [e.target.name]: value,
+    })
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const data = {
-      playerName: name,
-      match: match,
-      inns: inns,
-      runs: runs,
-      hs: hs,
-      ave: ave,
-    };
-    axios.post("https://localhost:3000/insert", { data }).then((res) => {
-      console.log(res);
-      console.log(res.data);
-      // window.location = "/retrieve"
-    });
-  };
+      Player_Name: state.Player_Name,
+      Matches: state.Matches,
+      Inns: state.Inns,
+      Runs: state.Runs,
+      HS: state.HS,
+      Ave: state.Ave
+    }
+    axios.post("http://localhost:5000/insert", data)
+  }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} method="Post">
         <label>Player name:</label>
         <br />
-        <input type="text" required onChange={nameUpdate} />
+        <input type="text" name="Player_Name" value={state.Player_Name} required onChange={handleUpdate} />
         <br />
 
         <label>Matches:</label>
         <br />
-        <input type="text" required onChange={matchUpdate} />
+        <input type="text" name="Matches" value={state.Matches} required onChange={handleUpdate} />
         <br />
 
         <label>Inns:</label>
         <br />
-        <input type="text" required onChange={innsUpdate} />
+        <input type="text" name="Inns" value={state.Inns} required onChange={handleUpdate} />
         <br />
 
         <label>Runs:</label>
         <br />
-        <input required onChange={runsUpdate} />
+        <input type="text" name="Runs" value={state.Runs} required onChange={handleUpdate} />
         <br />
 
         <label>HS:</label>
         <br />
-        <input required onChange={hsUpdate} />
+        <input type="text" name="HS" value={state.HS} required onChange={handleUpdate} />
         <br />
 
-        <label>AVE:</label>
+        <label>Ave:</label>
         <br />
-        <input required onChange={aveUpdate} />
+        <input type="text" name="Ave" value={state.Ave} required onChange={handleUpdate} />
         <br />
-        <button type="submit"> Insert </button>
+        <input type="submit" value="add" />
       </form>
     </div>
   );
