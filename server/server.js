@@ -42,12 +42,11 @@ app.post('/update', function (req, res) {
     var HS = req.body.HS;
     console.log(req.body)
     Player.findByIdAndUpdate(id, { Matches: Matches, Runs: Runs, HS: HS }, function (err, doc) {
-        if (err) {
-            console.log(err);
-        }
-        else {
+        if (err) console.log(err);
+
+        else
             res.status(200).json({ 'Player_Name': 'Updated' })
-        }
+
     })
 
 })
@@ -59,12 +58,13 @@ app.post('/delete', function (req, res) {
 
     Player.deleteOne({ Player_Name: Player_Name }, function (err) {
         if (err) console.log(err);
-        console.log("Successful deletion");
+        else
+            console.log("Successful deletion");
     })
 })
 
 
-app.get('/show', function (req, res) { })
+// app.get('/show', function (req, res) { })
 
 
 app.get('/getData/:PlayerName', function (req, res) {
@@ -93,6 +93,15 @@ app.get('/displayByMatches/:matches', function (req, res) {
 })
 
 
-app.get('/displayByHS', function (req, res) { })
+app.get('/displayByHS/:hs', function (req, res) {
+    var hs = req.params.hs
+    console.log(hs)
+    Player.find({ HS: { $gte: hs } }, function (err, data) {
+        if (err) console.log(err);
+        else res.json(data)
+        console.log(data.HS)
+
+    })
+})
 
 app.listen(5000, function () { console.log("listening on port 5000") });

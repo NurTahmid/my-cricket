@@ -25,22 +25,20 @@ function DisplayByMatches() {
     <div>
       <form onSubmit={handleSearch} method="Get">
         <label>display players with matches greater than: </label>
-        <input type="text" name="Player_Name" value={state} required onChange={handleUpdateSearch}></input>
+        <input type="number" name="Player_Name" value={state} required onChange={handleUpdateSearch}></input>
         <button type="submit">find</button>
       </form>
       <br />
 
       {playerData.map((item) => (
-        <div>
-          <p>{item.Player_Name}</p>
-          <p>{item.Matches}</p>
-          <p>{item.Runs}</p>
-          <p>{item.Inns}</p>
-          <p>{item.HS}</p>
-          <p>{item.Ave}</p>
+        <div key={item._id}>
+          <p>Player name: {item.Player_Name}</p>
+          <p>Matches: {item.Matches}</p>
+          <p>Runs: {item.Runs}</p>
+          <p>Inns: {item.Inns}</p>
+          <p>HS: {item.HS}</p>
+          <p>Ave: {item.Ave}</p>
         </div>
-        
-        
       ))}
     </div>
   )
