@@ -3,25 +3,45 @@ import { useState } from "react";
 
 
 function DisplayByMatches() {
-  var [name, setName] = useState();
+  var [state, setState] = useState("");
+  var [playerData, setPlayerData] = useState([]);
 
-  const nameUpdate = (event) => {
-    setName(event.target.value);
+  const handleUpdateSearch = (event) => {
+    setState(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSearch = (event) => {
     event.preventDefault();
+    const data = {
+      Matches: state
+    }
 
-    axios.get("https://localhost:3000/displayByMatches").then((res) => {
-      console.log(res);
-      // window.location = "/retrieve"
-    });
+    axios.get("http://localhost:5000/displaybyMatches/" + state, data).then(res => {
+      setPlayerData(res.data)
+      console.log(playerData)
+    })
   };
-  return(
-      <div>
-      <label>Display players by matches greater than: </label>
-      <input type="text"></input>
-      <button type="submit">find</button>
+  return (
+    <div>
+      <form onSubmit={handleSearch} method="Get">
+        <label>display players with matches greater than: </label>
+        <input type="text" name="Player_Name" value={state} required onChange={handleUpdateSearch}></input>
+        <button type="submit">find</button>
+      </form>
+      <br />
+
+      {playerData.map((item) => (
+        <div>
+          <p>{item.Player_Name}</p>
+          <p>{item.Matches}</p>
+          <p>{item.Runs}</p>
+          <p>{item.Inns}</p>
+          <p>{item.HS}</p>
+          <p>{item.Ave}</p>
+        </div>
+        
+        
+      ))}
     </div>
   )
 }

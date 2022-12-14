@@ -3,6 +3,7 @@ const app = express();
 const Player = require('./mongoSchema');
 const mongoConnect = require('./mongoConnect');
 const cors = require('cors');
+const { json } = require('express');
 
 
 app.use(express.json());
@@ -40,12 +41,12 @@ app.post('/update', function (req, res) {
     var Runs = req.body.Runs;
     var HS = req.body.HS;
     console.log(req.body)
-    Player.findByIdAndUpdate(id, {Matches:Matches, Runs:Runs, HS:HS}, function(err, doc){
-        if (err){
+    Player.findByIdAndUpdate(id, { Matches: Matches, Runs: Runs, HS: HS }, function (err, doc) {
+        if (err) {
             console.log(err);
         }
-        else{
-            res.status(200).json({ 'Player_Name':'Updated' })
+        else {
+            res.status(200).json({ 'Player_Name': 'Updated' })
         }
     })
 
@@ -81,10 +82,14 @@ app.get('/getData/:PlayerName', function (req, res) {
 })
 
 
-app.get('/displayByMatches', function (req, res) { })
+app.get('/displayByMatches/:matches', function (req, res) {
+    var matches = req.params.matches
+    console.log(matches)
+    Player.find({ Matches: { $gte: matches } }, function (err, data) {
+        if (err) console.log(err);
+        else res.json(data)
 
-app.get('/test', function (req, res) {
-    Player.findById("6398b8d106e0534ba6af940f", function (err, result) { console.log(result._id) })
+    }).limit(20)
 })
 
 
