@@ -1,27 +1,25 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+
 
 
 function Update() {
-  // let params = useParams();
-  var [state, setState] = useState("");
-  var [playerData, setPlayerData] = useState({
-    Matches: "",
-    Runs: "",
-    HS: ""
-  });
-  
 
-  const handleUpdate = (e) => {
+  var [state, setState] = useState("");
+  var [playerData, setPlayerData] = useState([]);
+
+
+  const handleUpdate = (e, i) => {
     const value = e.target.value;
-    setPlayerData({
-      ...playerData,
+    const newState = [...playerData]
+    newState[i] = {
+      ...newState[i],
       [e.target.name]: value,
-    })
+    };
+    setPlayerData(newState);
   }
   const handleUpdateSearch = (event) => {
-    setState(event.target.value); 
+    setState(event.target.value);
   };
 
   const handleSearch = (event) => {
@@ -30,33 +28,30 @@ function Update() {
       Player_Name: state
     }
 
-    axios.get("http://localhost:5000/getData/"+state, data).then(res =>{
-      console.log(res.data)
-          setPlayerData(res.data)
+    axios.get("http://localhost:5000/show/" + state, data).then(res => {
+      setPlayerData(res.data)
+      console.log(playerData)
     })
   };
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e, i) => {
+    e.preventDefault();
     const data = {
-      _id: playerData._id,
-      Matches: playerData.Matches,
-      Runs: playerData.Runs,
-      HS: playerData.HS
+      _id: playerData[i]._id,
+      Matches: playerData[i].Matches,
+      Runs: playerData[i].Runs,
+      HS: playerData[i].HS,
+      Date: playerData[i].Date
     }
     console.log(data)
 
-    axios.post("http://localhost:5000/update", data).then(res =>{
-      console.log(res.data)
-
+    axios.post("http://localhost:5000/update", data).then(res => {
+      console.log(playerData)
     })
   };
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:5000/getData"+state).then(res => {console.(res.data)})
-  // })
-  return(
+  return (
     <div>
       <form onSubmit={handleSearch} method="Get">
         <label>Update player: </label>
@@ -65,28 +60,33 @@ function Update() {
       </form>
       <br />
 
-      <form onSubmit={handleSubmit} method="Post">
+      {playerData.map((item, index) => (
+        <form key={index} onSubmit={(e) => handleSubmit(e, index)} method="Post">
 
-        <label>Matches:</label>
-        <br />
-        <input type="text" name="Matches" value={playerData.Matches} required onChange={handleUpdate} />
-        <br />
+          <label>Matches:</label>
+          <br />
+          <input type="text" name="Matches" value={item.Matches} required onChange={(e) => handleUpdate(e, index)} />
+          <br />
 
-        <label>Runs:</label>
-        <br />
-        <input type="text" name="Runs" value={playerData.Runs} required onChange={handleUpdate} />
-        <br />
+          <label>Runs:</label>
+          <br />
+          <input type="text" name="Runs" value={item.Runs} onChange={(e) => handleUpdate(e, index)} />
+          <br />
 
-        <label>HS:</label>
-        <br />
-        <input type="text" name="HS" value={playerData.HS} required onChange={handleUpdate} />
-        <br />
-        <label>ID:</label><br />
-        <input type="text" name="_id" disabled value={playerData._id}  />
-        
-        <br />
-        <input type="submit" value="update" />
-      </form>
+          <label>HS:</label>
+          <br />
+          <input type="text" name="HS" value={item.HS} onChange={(e) => handleUpdate(e, index)} />
+          <br />
+          <label>ID:</label><br />
+          <input type="text" name="_id" disabled value={item._id} />
+
+          <label>Date:</label><br />
+          <input type="date" name="Date" value={item.Date} onChange={(e) => handleUpdate(e, index)}></input>
+
+          <br />
+          <button type="submit">update </button>
+        </form>
+      ))}
     </div>
   )
 }

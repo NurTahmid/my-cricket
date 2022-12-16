@@ -19,7 +19,7 @@ function Show() {
       Player_Name: state
     }
 
-    axios.get("http://localhost:5000/getData/" + state, data).then(res => {
+    axios.get("http://localhost:5000/show/" + state, data).then(res => {
       console.log(res.data)
       setPlayerData(res.data)
     })

@@ -6,7 +6,8 @@ const PlayerScheme = new mongoose.Schema({
     Inns: Number,
     Runs: Number,
     HS: Number,
-    Ave: Number
+    Ave: Number,
+    Date: Date
 })
 
 module.exports = mongoose.model('playerModel', PlayerScheme, 'players')

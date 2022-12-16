@@ -40,8 +40,9 @@ app.post('/update', function (req, res) {
     var Matches = req.body.Matches;
     var Runs = req.body.Runs;
     var HS = req.body.HS;
+    var Date = req.body.Date;
     console.log(req.body)
-    Player.findByIdAndUpdate(id, { Matches: Matches, Runs: Runs, HS: HS }, function (err, doc) {
+    Player.findByIdAndUpdate(id, { Matches: Matches, Runs: Runs, HS: HS, Date: Date }, function (err, doc) {
         if (err) console.log(err);
 
         else
@@ -54,9 +55,9 @@ app.post('/update', function (req, res) {
 
 app.post('/delete', function (req, res) {
     console.log(req.body)
-    var Player_Name = req.body.Player_Name
+    var id = req.body._id
 
-    Player.deleteOne({ Player_Name: Player_Name }, function (err) {
+    Player.deleteOne({ _id: id }, function (err) {
         if (err) console.log(err);
         else
             console.log("Successful deletion");
@@ -64,12 +65,39 @@ app.post('/delete', function (req, res) {
 })
 
 
-// app.get('/show', function (req, res) { })
 
 
-app.get('/getData/:PlayerName', function (req, res) {
+app.get('/show/:PlayerName', function (req, res) {
     var Player_Name = req.params.PlayerName
-    Player.findOne({ Player_Name: Player_Name }, function (err, data) {
+    console.log(Player_Name)
+    Player.find({ Player_Name: Player_Name }, function (err, data) {
+        if (err) console.log(err);
+        var list = [];
+        for (var i = 0; i < Object.keys(data).length; i++) {
+            console.log(data[i]);
+            var data1 = {
+                _id: data[i]._id,
+                Matches: data[i].Matches,
+                Runs: data[i].Runs,
+                HS: data[i].HS
+            }
+            list.push(data1);
+        }
+        // var data1 = {
+        //     _id: data._id,
+        //     Matches: data.Matches,
+        //     Runs: data.Runs,
+        //     HS: data.HS
+        // }
+        // console.log(data)
+        res.json(list)
+    })
+})
+
+app.get('/showMany/:PlayerName', function (req, res) {
+    var Player_Name = req.params.PlayerName
+
+    Player.find({ Player_Name: Player_Name }, function (err, data) {
         if (err) console.log(err);
         var data1 = {
             _id: data._id,
