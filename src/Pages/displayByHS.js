@@ -23,7 +23,7 @@ function DisplayByHS() {
   };
   return (
     <div>
-      <form onSubmit={handleSearch} method="Get">
+      <form className={style.form} onSubmit={handleSearch} method="Get">
         <label>display players with HS greater than: </label>
         <input type="number" name="Player_Name" value={state} required onChange={handleUpdateSearch}></input>
         <button type="submit">find</button>

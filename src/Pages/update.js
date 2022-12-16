@@ -50,7 +50,7 @@ function Update() {
 
   return (
     <div>
-      <form onSubmit={handleSearch} method="Get">
+      <form className={style.form} onSubmit={handleSearch} method="Get">
         <label>Update player: </label>
         <input type="text" name="Player_Name" value={state} required onChange={handleUpdateSearch}></input>
         <button type="submit">find</button>

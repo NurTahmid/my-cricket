@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import style from "./card.module.css"
 
 function Insert() {
   var [state, setState] = useState({
@@ -36,7 +37,7 @@ function Insert() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} method="Post">
+      <form className={style.form} onSubmit={handleSubmit} method="Post">
         <label>Player name:</label>
         <br />
         <input type="text" name="Player_Name" value={state.Player_Name} required onChange={handleUpdate} />
