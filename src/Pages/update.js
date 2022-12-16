@@ -1,13 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-
-
+import style from "./card.module.css"
 
 function Update() {
-
   var [state, setState] = useState("");
   var [playerData, setPlayerData] = useState([]);
-
 
   const handleUpdate = (e, i) => {
     const value = e.target.value;
@@ -61,31 +58,33 @@ function Update() {
       <br />
 
       {playerData.map((item, index) => (
-        <form key={index} onSubmit={(e) => handleSubmit(e, index)} method="Post">
+        <div className={style.card} key={index}>
+          <form onSubmit={(e) => handleSubmit(e, index)} method="Post">
 
-          <label>Matches:</label>
-          <br />
-          <input type="text" name="Matches" value={item.Matches} required onChange={(e) => handleUpdate(e, index)} />
-          <br />
+            <label>Matches:</label>
+            <br />
+            <input type="text" name="Matches" value={item.Matches} required onChange={(e) => handleUpdate(e, index)} />
+            <br />
 
-          <label>Runs:</label>
-          <br />
-          <input type="text" name="Runs" value={item.Runs} onChange={(e) => handleUpdate(e, index)} />
-          <br />
+            <label>Runs:</label>
+            <br />
+            <input type="text" name="Runs" value={item.Runs} onChange={(e) => handleUpdate(e, index)} />
+            <br />
 
-          <label>HS:</label>
-          <br />
-          <input type="text" name="HS" value={item.HS} onChange={(e) => handleUpdate(e, index)} />
-          <br />
-          <label>ID:</label><br />
-          <input type="text" name="_id" disabled value={item._id} />
+            <label>HS:</label>
+            <br />
+            <input type="text" name="HS" value={item.HS} onChange={(e) => handleUpdate(e, index)} />
+            <br />
+            <label>ID:</label><br />
+            <input type="text" name="_id" disabled value={item._id} />
 
-          <label>Date:</label><br />
-          <input type="date" name="Date" value={item.Date} onChange={(e) => handleUpdate(e, index)}></input>
+            <label>Date:</label><br />
+            <input type="date" name="Date" value={item.Date} onChange={(e) => handleUpdate(e, index)}></input>
 
-          <br />
-          <button type="submit">update </button>
-        </form>
+            <br />
+            <button type="submit">update </button>
+          </form>
+        </div>
       ))}
     </div>
   )

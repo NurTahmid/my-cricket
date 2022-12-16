@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-
+import style from "./card.module.css"
 
 function DisplayByHS() {
   var [state, setState] = useState("");
@@ -30,8 +30,8 @@ function DisplayByHS() {
       </form>
       <br />
 
-      {playerData.map((item) => (
-        <div key={item._id}>
+      {playerData.map((item, index) => (
+        <div className={style.card} key={index}>
           <p>Player name: {item.Player_Name}</p>
           <p>Matches: {item.Matches}</p>
           <p>Runs: {item.Runs}</p>

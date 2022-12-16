@@ -1,18 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import style from "./card.module.css"
 
 function Delete() {
   var [state, setState] = useState("");
   var [playerData, setPlayerData] = useState([]);
 
-  // const handleUpdate = (event) => {
-  //   setState(event.target.value);
-  // };
-
   const handleUpdateSearch = (event) => {
     setState(event.target.value);
   };
-
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -26,17 +22,7 @@ function Delete() {
     })
   };
 
-  // const handleSubmit = (e, i) => {
-  //   e.preventDefault();
-  //   const data = {
-  //     _id: playerData[i]._id,
-  //   }
-  //   console.log(data)
-
-  //   axios.post("http://localhost:5000/deletes", data)
-  // };
-
-  const handleSubmit = (e, i)  => {
+  const handleSubmit = (e, i) => {
     e.preventDefault();
     const data = {
       _id: playerData[i]._id
@@ -52,37 +38,38 @@ function Delete() {
         <button type="submit">find</button>
       </form>
       <br />
-      {playerData.map((item, index) => (
-        <div key={index}>
-          <form onSubmit={(e) => handleSubmit(e, index)}>
+      <div>
+        {playerData.map((item, index) => (
+          <div className={style.card} key={index}>
+            <form onSubmit={(e) => handleSubmit(e, index)}>
 
-            <label>Player name:</label>
-            <br />
-            <input type="text" name="Player_name" value={state} disabled />
-            <br />
+              <label>Player name:</label>
+              <br />
+              <input type="text" name="Player_name" value={state} disabled />
+              <br />
 
-            <label>ID:</label>
+              <label>ID:</label>
+              <br />
+              <input type="text" name="_id" value={item._id} disabled />
+              <br />
+
+              <label>Matches:</label>
+              <br />
+              <input type="text" name="Matches" value={item.Matches} disabled />
+              <br />
+
+              <label>Runs:</label>
+              <br />
+              <input type="text" name="Matches" value={item.Runs} disabled />
+              <br />
+
+              <button type="submit">delete</button>
+
+            </form>
             <br />
-            <input type="text" name="_id" value={item._id} disabled />
-            <br />
-            <label>Matches:</label>
-            <br />
-            <input type="text" name="Matches" value={item.Matches} disabled />
-            <br />
-            <label>Runs:</label>
-            <br />
-            <input type="text" name="Matches" value={item.Runs} disabled />
-            <br />
-            <button type="submit">delete</button>
-          </form>
-          <br />
-        </div>
-      ))}
-      {/* <form onSubmit={handleSubmit} method="Post">
-        <label>Delete player: </label>
-        <input type="text" name="Player_Name" value={state} required onChange={handleUpdate}></input>
-        <button type="submit">delete</button>
-      </form> */}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

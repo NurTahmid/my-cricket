@@ -1,13 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import style from "./card.module.css"
+
 function Show() {
   var [state, setState] = useState("");
-  var [playerData, setPlayerData] = useState({
-    Matches: "",
-    Runs: "",
-    HS: ""
-  });
+  var [playerData, setPlayerData] = useState([]);
 
   const handleUpdateSearch = (event) => {
     setState(event.target.value);
@@ -33,10 +31,18 @@ function Show() {
       </form>
       <br />
 
-      {playerData.Matches !== "" ? <p>Matches: {playerData.Matches} </p> : ""}
-      {playerData.Runs !== "" ? <p>Runs: {playerData.Runs} </p> : ""}
-      {playerData.HS !== "" ? <p>HS: {playerData.HS} </p> : ""}
+      <div>
+        {playerData.map((item, index) => (
+          <div className={style.card} key={index}>
 
+            <p>ID: {item._id}</p>
+            <p>Matches: {item.Matches} </p>
+            <p>Runs: {item.Runs} </p>
+            <p>HS: {item.HS} </p>
+
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
